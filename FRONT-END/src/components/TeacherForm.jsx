@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+
 const TeacherForm = ({ onAddTeacher }) => {
   const [formData, setFormData] = useState({
     nome: '',
@@ -13,9 +14,13 @@ const TeacherForm = ({ onAddTeacher }) => {
 
   useEffect(() => {
     const fetchSchools = async () => {
-      const response = await fetch('http://localhost:5000/api/schools');
-      const data = await response.json();
-      setSchools(data.schools);
+      try {
+        const response = await fetch('http://localhost:3000/api/school-list');
+        const data = await response.json();
+        setSchools(data);
+      } catch (error) {
+        console.error('Error fetching schools:', error);
+      }
     };
     fetchSchools();
   }, []);
@@ -30,7 +35,7 @@ const TeacherForm = ({ onAddTeacher }) => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/teachers', {
+      const response = await fetch('http://localhost:3000/api/teachers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -109,12 +114,12 @@ const TeacherForm = ({ onAddTeacher }) => {
           </select>
         </div>
         {error && <div className="error">{error}</div>}
-        <button type="submit">Add Teacher</button>
+        <button type="submit">Adicionar Professor</button>
       </form>
     </div>
   );
 };
 
-TeacherForm.propTypes = { onAddTeacher: PropTypes.func };
+TeacherForm.propTypes = { onAddTeacher: PropTypes.func.isRequired };
 
 export default TeacherForm;

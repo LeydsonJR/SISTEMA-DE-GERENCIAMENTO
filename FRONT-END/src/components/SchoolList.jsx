@@ -5,13 +5,12 @@ const SchoolList = () => {
 
   useEffect(() => {
     const fetchSchools = async () => {
-      const response = await fetch('http://localhost:5000/api/schools');
+      const response = await fetch('http://localhost:3000/api/school-list');
       const data = await response.json();
-      setSchools(data.schools);
+      setSchools(data);
     };
     fetchSchools();
   }, []);
-
   return (
     <div className="school-list">
       <h2>Escolas Cadastradas</h2>

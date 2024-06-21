@@ -5,7 +5,7 @@ const StudentList = () => {
 
   useEffect(() => {
     const fetchStudents = async () => {
-      const response = await fetch('http://localhost:5000/api/students');
+      const response = await fetch('http://localhost:3000/api/student');
       const data = await response.json();
       setStudents(data.students);
     };

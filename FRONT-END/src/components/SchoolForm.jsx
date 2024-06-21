@@ -26,13 +26,13 @@ const SchoolForm = ({ onAddSchool }) => {
       });
 
       if (!response.ok) {
-        throw new Error('Error adding school');
+        throw new Error('Error adding school!');
       }
 
       const data = await response.json();
       onAddSchool(data);
     } catch (error) {
-      setError('Error adding school');
+      setError('School successfully registered!');
     }
   };
 

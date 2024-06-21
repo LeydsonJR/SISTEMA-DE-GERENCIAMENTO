@@ -1,20 +1,32 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+
 const StudentForm = ({ onAddStudent }) => {
   const [formData, setFormData] = useState({
     nome: '',
     cpf: '',
     data_nascimento: '',
-    teacher_id: '',
+    professor_cpf: '',
+    senha: '',
   });
   const [teachers, setTeachers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchTeachers = async () => {
-      const response = await fetch('http://localhost:5000/api/teachers');
-      const data = await response.json();
-      setTeachers(data.teachers);
+      try {
+        const response = await fetch('http://localhost:3000/api/teachers-list');
+        if (!response.ok) {
+          throw new Error('Failed to fetch teachers');
+        }
+        const data = await response.json();
+        setTeachers(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching teachers:', error);
+        setLoading(false);
+      }
     };
     fetchTeachers();
   }, []);
@@ -29,7 +41,7 @@ const StudentForm = ({ onAddStudent }) => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/students', {
+      const response = await fetch('http://localhost:3000/api/students', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,10 +55,23 @@ const StudentForm = ({ onAddStudent }) => {
 
       const data = await response.json();
       onAddStudent(data);
+      // Limpar o formulário após o envio bem-sucedido
+      setFormData({
+        nome: '',
+        cpf: '',
+        senha: '',
+        data_nascimento: '',
+        professor_cpf: '',
+      });
     } catch (error) {
       setError('Error adding student');
+      console.error('Error adding student:', error);
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="student-form">
@@ -72,6 +97,16 @@ const StudentForm = ({ onAddStudent }) => {
           />
         </div>
         <div>
+          <label>Senha</label>
+          <input
+            type="password"
+            name="senha"
+            value={formData.senha}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
           <label>Data de Nascimento</label>
           <input
             type="date"
@@ -84,14 +119,14 @@ const StudentForm = ({ onAddStudent }) => {
         <div>
           <label>Professor</label>
           <select
-            name="teacher_id"
-            value={formData.teacher_id}
+            name="professor_cpf"
+            value={formData.professor_cpf}
             onChange={handleChange}
             required
           >
             <option value="">Selecione um professor</option>
             {teachers.map((teacher) => (
-              <option key={teacher.id} value={teacher.id}>
+              <option key={teacher.cpf} value={teacher.cpf}>
                 {teacher.nome}
               </option>
             ))}
@@ -104,5 +139,8 @@ const StudentForm = ({ onAddStudent }) => {
   );
 };
 
-StudentForm.propTypes = { onAddStudent: PropTypes.func };
+StudentForm.propTypes = {
+  onAddStudent: PropTypes.func.isRequired,
+};
+
 export default StudentForm;
