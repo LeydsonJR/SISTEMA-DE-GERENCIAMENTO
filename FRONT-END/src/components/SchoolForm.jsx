@@ -17,7 +17,7 @@ const SchoolForm = ({ onAddSchool }) => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/schools', {
+      const response = await fetch('http://localhost:3000/api/schools', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

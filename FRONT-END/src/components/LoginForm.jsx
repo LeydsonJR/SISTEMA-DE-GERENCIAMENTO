@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 const LoginForm = ({ onLogin }) => {
   const [cpf, setCpf] = useState('');
@@ -10,7 +11,7 @@ const LoginForm = ({ onLogin }) => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/login', {
+      const response = await fetch('http://localhost:3000/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,5 +57,7 @@ const LoginForm = ({ onLogin }) => {
     </div>
   );
 };
+
+LoginForm.propTypes = { onLogin: PropTypes.func };
 
 export default LoginForm;
