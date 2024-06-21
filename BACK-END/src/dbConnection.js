@@ -17,4 +17,7 @@ const client = new Client({
   database: 'Back-GEN',
 });
 
-module.exports = client;
+module.exports = {
+  client,
+  pool,
+};
