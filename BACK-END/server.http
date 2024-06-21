@@ -1,7 +1,10 @@
-POST http://localhost:3000/api/schools
+POST http://localhost:3000/api/studants
 Content-Type: application/json
 
 {
-  "nome": "Escola",
-  "endereco": "Na rua"
+  "nome": "João Silva",
+  "cpf": "12345678900",
+  "senha": "senha123",
+  "data_nascimento": "1990-01-01",
+  "professor_cpf": 1
 }
