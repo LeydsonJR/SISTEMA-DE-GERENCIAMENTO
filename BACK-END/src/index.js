@@ -80,6 +80,15 @@ app.get('/api/teachers-list', async (req, res) => {
     res.status(500).send({ error: 'Error fetching school list' });
   }
 });
+app.get('/api/students-list', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM aluno');
+    res.status(200).send(result.rows);
+  } catch (error) {
+    console.error('Error fetching students list:', error);
+    res.status(500).send({ error: 'Error fetching students list' });
+  }
+});
 
 app.post('/api/students', async (req, res) => {
   const { nome, cpf, data_nascimento, professor_cpf, senha } = req.body;
